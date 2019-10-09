@@ -7,14 +7,16 @@ class SessionsController < Devise::SessionsController
   end
 
   def create
-    # super
     user = User.find_by_email(sign_in_params[:email])
 
     if user && user.valid_password?(sign_in_params[:password])
       @current_user = user
       render_resource(user)
+    elsif user && !user.valid_password?(sign_in_params[:password])
+      p 'password wrong'
+      render json: { errors: 'you have enter invalid password' }, status: :unprocessable_entity
     else
-      render json: { data: {}, errors: { 'email or password' => ['is invalid'] } }, status: 422
+      render json: { errors: 'you have enter invalid email' }, status: :unprocessable_entity
     end
   end
 
