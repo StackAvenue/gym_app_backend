@@ -13,17 +13,25 @@ class UserDetailsController < ApplicationController
   def create
     user_details = @user.user_details.new(user_details_params)
     if user_details.save
-      render json: user_details
+       render json: user_details.user_detail_info
     else
       render json: { errors: 'user details not saved, please try again.' }, status: :unprocessable_entity
     end
   end
 
   def update
-    if @user_details.update_attributes(user_details_params)
-      render json: @user_details
+    if @user_detail.update_attributes(user_details_params)
+      render json: @user_detail
     else
       render json: { errors: @user.errors }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if @user_detail.destroy
+      render json: @user_detail
+    else
+      render json: { errors: @user_detail.errors }, status: :unprocessable_entity
     end
   end
 
@@ -34,7 +42,7 @@ class UserDetailsController < ApplicationController
   end
 
   def load_user_details
-    @user_details = UserDetails.find(params[:id])
+    @user_detail = UserDetail.find(params[:id])
   end
 
   def load_user

@@ -11,7 +11,8 @@ class SessionsController < Devise::SessionsController
 
     if user && user.valid_password?(sign_in_params[:password])
       @current_user = user
-      render_resource(user)
+      # render_resource(user)
+      render json: { user: user, data: user.user_info }, status: 200
     elsif user && !user.valid_password?(sign_in_params[:password])
       render json: { errors: 'you have enter invalid password' }, status: :unprocessable_entity
     else
