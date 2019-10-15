@@ -9,7 +9,8 @@ class UsersController < ApplicationController
 
   def show
     if @user.present?
-      render json: { details: @user.user_info, role: @user.role_name, all_users: @user.all_users, role_lists: @user.role_lists, trainer_lists: @user.trainer_lists }
+      # render json: { details: @user.user_info, role: @user.role_name, all_users: @user.all_users, role_lists: @user.role_lists, trainer_lists: @user.trainer_lists }
+      render json: @user.user_details_response
     else
       render json: { errors: @user.errors }, status: :unprocessable_entity
     end
@@ -34,7 +35,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :role_id)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :role_id, :trainer_id )
   end
 
   def load_user
